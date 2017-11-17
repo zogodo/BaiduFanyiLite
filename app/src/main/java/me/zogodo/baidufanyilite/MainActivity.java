@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -22,6 +21,7 @@ public class MainActivity extends AppCompatActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
 
         //region 初始化 js css
         try
@@ -35,12 +35,9 @@ public class MainActivity extends AppCompatActivity
         }
         //endregion
 
-        webview_baidu = new MyWebView(this, new Stack<MyWebView>());
-        webview_baidu.first_view = true;
+        webview_baidu = new MyWebView(this);
         webview_baidu.VebViewInit(url_baidu_fy, js_baidu, css_baidu);
-        getSupportActionBar().hide();
-        this.webview_baidu.StartView();
-
+        this.setContentView(webview_baidu);
     }
 
     @Override
