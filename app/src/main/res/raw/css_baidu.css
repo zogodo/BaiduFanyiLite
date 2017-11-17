@@ -1,0 +1,26 @@
+.trans-btn {
+    width: 60px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    float: right!important;
+    margin-right: 6px!important;
+    margin-top: -38px!important;
+}
+.appbanner {
+    display: none !important;
+}
+.article {
+    display: none !important;
+}
+.bottom-intro {
+    display: none !important;
+}
+.fanyi-sfr-container .app-guide {
+    display: none!important;
+}
+.fanyi-sfr-container .app-bar {
+    display: none!important;
+}
+.sug-wrap {
+    margin-top: 0!important;
+}
