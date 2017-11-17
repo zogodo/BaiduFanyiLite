@@ -1,19 +1,15 @@
 package me.zogodo.baidufanyilite;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
-import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.RelativeLayout;
 
 import java.util.Stack;
 
@@ -28,9 +24,6 @@ public class MyWebView extends WebView
     public boolean first_view = false;
     public String myjs = "";
     public String mycss = "";
-    public SwipeRefreshLayout swipe_refresh_layout = null;
-    public int screen_witdh;
-    public int screen_height;
     //endregion
 
     //region 构造器
@@ -66,18 +59,7 @@ public class MyWebView extends WebView
 
     public void StartView()
     {
-        Object ob = this.getParent();
-        if (ob != null)
-        {
-            this.swipe_refresh_layout = (SwipeRefreshLayout)ob;
-            this.BindFresh(this.swipe_refresh_layout);
-            RelativeLayout rel_layout = (RelativeLayout)this.swipe_refresh_layout.getParent();
-            this.activity.setContentView(rel_layout);
-        }
-        else
-        {
-            this.activity.setContentView(this);
-        }
+        this.activity.setContentView(this);
     }
 
     public void injectCSS()
@@ -118,86 +100,11 @@ public class MyWebView extends WebView
 
         WindowManager wm = (WindowManager)this.activity.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
-        this.screen_witdh = display.getWidth();
-        this.screen_height = display.getHeight();
 
         this.myjs = js;
         this.mycss = css;
         this.loadUrl(url);
     }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    public void BindFresh(final SwipeRefreshLayout swipeRefresh)
-    {
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
-            @Override
-            public void onRefresh()
-            {
-                //重新加载刷新页面
-                String url = MyWebView.this.getUrl();
-                MyWebView.this.loadUrl(url);
-            }
-        });
-        // swipeRefresh.post(new Runnable() {
-        //     @Override
-        //     public void run() {
-        //         swipeRefresh.setRefreshing(true);
-        //         //MyWebView.this.loadUrl(MyWebView.this.getUrl());
-        //     }
-        // });
-        swipeRefresh.setColorSchemeResources(
-                android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_green_light
-        );
-
-        this.setWebChromeClient(new WebChromeClient() // alert() 要用
-        {
-            public boolean onConsoleMessage(ConsoleMessage cm)
-            {
-                Log.d("MyApplication", cm.message() + " -- From line "
-                        + cm.lineNumber() + " of "
-                        + cm.sourceId());
-                return true;
-            }
-
-            public void onProgressChanged(WebView view, int newProgress)
-            {
-                if (newProgress == 100)
-                {
-                    //隐藏进度条
-                    swipeRefresh.setRefreshing(false);
-                }
-                else if (!swipeRefresh.isRefreshing())
-                {
-                    swipeRefresh.setRefreshing(true);
-                }
-            }
-        });
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
-        if (swipe_refresh_layout == null)
-        {
-            return super.onTouchEvent(event);
-        }
-        float y = event.getY();
-        float x = event.getX();
-        if (x > this.screen_witdh/2 - x/6 && x < this.screen_witdh/2 + x/6)
-        {
-            swipe_refresh_layout.setEnabled(true);
-        }
-        else
-        {
-            swipe_refresh_layout.setEnabled(false);
-        }
-        return super.onTouchEvent(event);
-    }
-
 }
 
 
