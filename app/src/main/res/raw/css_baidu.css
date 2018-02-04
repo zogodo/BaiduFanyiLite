@@ -24,3 +24,6 @@
 .sug-wrap {
     margin-top: 0!important;
 }
+.header-btn-group, .ft-container {
+    display: none !important;
+}

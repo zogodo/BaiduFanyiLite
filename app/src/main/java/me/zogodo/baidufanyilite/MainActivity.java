@@ -43,11 +43,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
+        /*
         if (webview_baidu.canGoBack())
         {
             webview_baidu.goBack();
             return;
         }
+        */
         // 判断是否可后退，是则后退，否则退出程序
         if (((System.currentTimeMillis() - exitTime) > 3000))
         {
